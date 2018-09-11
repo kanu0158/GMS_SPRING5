@@ -7,11 +7,9 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.gms.web.mapper.MemberMapper;
 @Service
 public class MemberServiceImpl implements MemberService{
-	@Autowired MemberMapper memberDAO;
+	@Autowired MemberMapper mapper;
 	@Override
 	public void add(Member p) {
 		System.out.println("p.getssn : "+p.getSsn());
@@ -39,7 +37,7 @@ public class MemberServiceImpl implements MemberService{
 		}
 		p.setAge(age);
 		p.setGender(gender);
-		memberDAO.insert(p);
+		mapper.insert(p);
 	}
 
 	@Override
@@ -56,7 +54,7 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public Member retrieve(Member p) {
-		return memberDAO.selectOne(p);
+		return mapper.selectOne(p);
 	}
 
 	@Override
@@ -67,19 +65,19 @@ public class MemberServiceImpl implements MemberService{
 
 	@Override
 	public void modify(Member p) {
-		memberDAO.update(p);
+		mapper.update(p);
 	}
 
 	@Override
 	public void remove(Member p) {
-		memberDAO.delete(p);
+		mapper.delete(p);
 		
 	}
 
 	@Override
 	public boolean login(Member p) {
-		System.out.println("service login memberDTO :" +memberDAO.login(p));
-		return (memberDAO.login(p)!=null);
+		System.out.println("service login memberDTO :" +mapper.login(p));
+		return (mapper.login(p)!=null);
 	}
 
 }

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.gms.web.mbr.MemberMapper">
+  <select id="selectOne" resultType="com.gms.web.mbr.Member">
+    SELECT USERID, TEAMID, PASSWORD, NAME, SSN, ROLL, AGE, GENDER, SUBJECT FROM MEMBER 
+    WHERE USERID LIKE #{userId}
+  </select>
+  <insert id="insert">
+  	INSERT INTO MEMBER
+	( USERID, TEAMID, PASSWORD, NAME, SSN, ROLL, AGE, GENDER, SUBJECT )
+	VALUES
+	(#{userId},#{teamId},#{password},#{name},#{ssn},#{roll},#{age},#{gender},#{subject});
+  </insert>
+  <select id="login" resultType="com.gms.web.mbr.Member">
+    SELECT USERID, TEAMID, PASSWORD, NAME, SSN, ROLL, AGE, GENDER, SUBJECT FROM MEMBER 
+    WHERE USERID LIKE #{userId}
+    	AND PASSWORD LIKE #{password}
+  </select>
+   <select id="exist" resultType="string">
+    SELECT USERID FROM MEMBER 
+    WHERE USERID LIKE #{userId}
+  </select>
+  <delete id="delete">
+  	DELETE FROM MEMBER 
+	WHERE USERID LIKE #{userId}
+			AND PASSWORD LIKE #{password};
+  </delete>
+  <update id="update">
+  	UPDATE MEMBER
+	SET ROLL = #{roll},PASSWORD = #{password},TEAMID = #{teamId}
+	WHERE USERID LIKE #{userId};
+  </update>
+  
+</mapper>

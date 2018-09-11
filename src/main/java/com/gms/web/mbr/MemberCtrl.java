@@ -1,5 +1,8 @@
 package com.gms.web.mbr;
 
+import java.util.function.Function;
+import java.util.function.Predicate;
+
 import javax.servlet.http.HttpSession;
 import javax.websocket.Session;
 
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 public class MemberCtrl {
 	static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
 	@Autowired MemberService memberService;
+	@Autowired MemberMapper mbrmapper;
+	@Autowired Member m;
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public String add(@ModelAttribute("member") Member member) {
@@ -81,10 +86,18 @@ public class MemberCtrl {
 	public String login(@ModelAttribute("member") Member member,			
 						Model model) {
 		logger.info("MemberController ::: login ");
+		Predicate<String> p = s -> !s.equals("");
 		System.out.println("---userId : "+member.getUserId());
 		System.out.println("---password : "+member.getPassword());
 		String path = "auth:member/login.tiles";
-		
+		if(p.test(mbrmapper.exist(member.getUserId()))) {
+			Function<Member,Member> f = (t)->{
+				return mbrmapper.login(t);
+			};
+			path = f.apply(member) == null?path:"user:member/retrieve.tiles";
+			System.out.println(path);
+		}
+		/*
 		if(memberService.login(member)) {
 			System.out.println("로긴 성공");
 			model.addAttribute("user", memberService.retrieve(member));
@@ -95,7 +108,7 @@ public class MemberCtrl {
 			path = "user:member/retrieve.tiles";
 		}else{
 			System.out.println("로긴실패");
-		};
+		};*/
 		return path;
 	}
 	@RequestMapping("/logout")
