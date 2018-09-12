@@ -87,58 +87,6 @@ app = {
 			console.log('step 4 app.session.path(js) :'+app.j());
 		}
 };
-app.session = {
-		context : x=>{
-			console.log('step 2 x:'+x);
-			sessionStorage.setItem('context',x);//내장된 객체와 메소드들
-			sessionStorage.setItem('js',x+'/resources/js');
-			sessionStorage.setItem('css',x+'/resources/css');
-			sessionStorage.setItem('img',x+'/resources/img');
-		},
-		path : x=>{
-			return sessionStorage.getItem(x);
-		}
-};
-app.x = ()=>{
-	return app.session.path('context');
-};
-app.j = ()=>{
-	return app.session.path('js');
-};
-app.c = ()=>{
-	return app.session.path('css');
-};
-app.i = ()=>{
-	return app.session.path('img');
-};
-app.user = {
-		init : x=>{
-			alert('userId '+x.userId);
-			alert('password '+x.password);
-			sessionStorage.setItem('userId', x.userId);
-			sessionStorage.setItem('password', x.password);
-		},
-		getUserId : x=>{
-			return sessionStorage.getItem(x);
-		},
-		getPassword : x=>{
-			return sessionStorage.getItem(x);
-		}
-};
-app.uI = ()=>{
-	return app.user.getUserId('userId');
-};
-app.ps = ()=>{
-	return app.user.getPassword('password');
-};
-
-user.session = x=>{
-	$.each(x,(k,v)=>{
-		alert('key:'+k+', value'+v);
-		sessionStorage.setItem(k, v);
-	});
-	alert(sessionStorage.getItem('userId'));
-};
 
 
 
