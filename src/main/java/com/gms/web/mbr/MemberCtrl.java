@@ -92,6 +92,7 @@ public class MemberCtrl {
 		//Predicate<String> p = s -> !s.equals("");
 		//Predicate<String> p = s -> s.equals("");
 		//Predicate<String> notP = p.negate();
+		//
 		System.out.println("---userId : "+member.getUserId());
 		System.out.println("---password : "+member.getPassword());
 		String path = "auth:member/login.tiles";
