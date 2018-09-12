@@ -1,4 +1,4 @@
-package com.gms.web.generic;
+package com.gms.web.lambda;
 
 import java.util.function.Predicate;
 

@@ -1,5 +1,6 @@
 package com.gms.web.mbr;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import com.gms.web.cmm.Util;
+
 @Controller
 @RequestMapping("/member")
 @SessionAttributes("user")
@@ -86,29 +89,24 @@ public class MemberCtrl {
 	public String login(@ModelAttribute("member") Member member,			
 						Model model) {
 		logger.info("MemberController ::: login ");
-		Predicate<String> p = s -> !s.equals("");
+		//Predicate<String> p = s -> !s.equals("");
+		//Predicate<String> p = s -> s.equals("");
+		//Predicate<String> notP = p.negate();
 		System.out.println("---userId : "+member.getUserId());
 		System.out.println("---password : "+member.getPassword());
 		String path = "auth:member/login.tiles";
-		if(p.test(mbrmapper.exist(member.getUserId()))) {
+		//p.test(mbrmapper.exist(member.getUserId()))
+		if(Util.notNull.test(mbrmapper.exist(member.getUserId()))) {
 			Function<Member,Member> f = (t)->{
 				return mbrmapper.login(t);
 			};
 			path = f.apply(member) == null?path:"user:member/retrieve.tiles";
-			System.out.println(path);
+			m = Predicate.isEqual("auth:member/login.tiles").test(path)? new Member():mbrmapper.selectOne(member);
+			Util.log.accept(m.toString());
+			
+			//System.out.println(path);
 		}
-		/*
-		if(memberService.login(member)) {
-			System.out.println("로긴 성공");
-			model.addAttribute("user", memberService.retrieve(member));
-			System.out.println("-------------");
-			System.out.println("userId : "+member.getUserId());
-			System.out.println("password : "+member.getPassword());
-			System.out.println("-------------");
-			path = "user:member/retrieve.tiles";
-		}else{
-			System.out.println("로긴실패");
-		};*/
+		
 		return path;
 	}
 	@RequestMapping("/logout")
