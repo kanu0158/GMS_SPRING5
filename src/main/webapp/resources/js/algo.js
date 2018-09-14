@@ -64,6 +64,7 @@ algo.main = {
 				.html('결과보기')
 				.appendTo($('#ques'))
 				.click(e=>{
+					$('#dap').remove();
 					let arr = [
 						$('#s').val()*1,
 						$('#e').val()*1,
@@ -71,7 +72,7 @@ algo.main = {
 						];
 					if($.fn.zeroChecker(arr)){
 						console.log('<h6>빈칸을채우세요</h6>');
-						$('dap').text('<h6>빈칸을채우세요</h6>');
+						$('<input/>').attr({id:'dap',type:'text'}).appendTo($('#ques')).val('빈칸을채우세요');
 					}else{
 						console.log(arr[0]+','+arr[1]+','+arr[2]);
 						let i=arr[0];
@@ -80,11 +81,12 @@ algo.main = {
 							sum += i;
 							i+=arr[2];
 						}
-						$('#dap').val(sum);
+						//$('#dap').val(sum);
+						$('<input/>').attr({id:'dap',type:'text'}).appendTo($('#ques')).val(sum);
 					}
 					
 				});
-				$('<input/>').attr({id:'dap',type:'text'}).appendTo($('#ques'));
+				//사용할때만 존재하게 하려면 안에다 넣어라 $('<input/>').attr({id:'dap',type:'text'}).appendTo($('#ques'));
 				
 				/*$('#t__r').append('<div id="ques"><h3>시작값 x, 마지막값 e, 공차 d 인 등차수열의 합을 구하시오.</h3>'
 				+'<label for="s">시작값</label><input id="s" type="text"></br>'
