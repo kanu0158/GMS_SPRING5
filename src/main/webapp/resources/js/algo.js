@@ -49,15 +49,23 @@ algo.main = {
 				$t__r.empty();
 				$('<div/>').attr({id:'ques'}).appendTo($t__r);
 				$('<h3/>').html('시작값 x, 마지막값 e, 공차 d 인 등차수열의 합을 구하시오.').appendTo($('#ques'));
-				$('<label/>').html('시작값').appendTo($('#ques'));
-				$('<input/>').attr({id:'s',type:'text'}).appendTo($('#ques'));
-				$('<br/>').appendTo($('#ques'));
-				$('<label/>').html('마지막값').appendTo($('#ques'));
-				$('<input/>').attr({id:'e',type:'text'}).appendTo($('#ques'));
-				$('<br/>').appendTo($('#ques'));
-				$('<label/>').html('공차').appendTo($('#ques'));
-				$('<input/>').attr({id:'d',type:'text'}).appendTo($('#ques'));
-				$('<br/>').appendTo($('#ques'));
+				
+				let x = [{id:'s', label:'시작값'},
+						{id:'e', label:'마지막값'},
+						{id:'d', label:'공차'}];
+				/*for(let i in x){
+					$('<label/><br/>').html(x[i].label).appendTo($('#ques'));
+					$('<input/><br/>').attr({id:x[i].id}).appendTo($('#ques'));
+					//$('').appendTo($('#ques'));
+				}*/
+				$.each(x,function(){//()=>{}, 아직 지원이 안된 듯
+					//$.fn.label('시작값','ques');
+					$('<label/><br/>').html(this.label).appendTo($('#ques'));
+					$('<input/><br/>').attr({id:this.id}).appendTo($('#ques'));
+					//$('<br/>').appendTo($('#ques'));
+				});
+				
+				
 				$('<button/>')
 				.addClass('btn btn-primary')//btn은 부트스트랩 css에서 본 것
 				.attr({type:'button'})
@@ -95,7 +103,8 @@ algo.main = {
 				+'<button id="bt">결과보기</button></br>'
 				+'<label for="dap">답</label><input id="dap" type="text"></div>');*/
 			});
-		
+			
+			
 			$('#swit__seq').click(e=>{
 				$('#t__r').html('<h3>시작값 x, 마지막값 e, 공차 d 인 스위치수열의 합을 구하시오.</h3>'
 						+'<label for="s">시작값</label><input id="s" type="text"></br>'
