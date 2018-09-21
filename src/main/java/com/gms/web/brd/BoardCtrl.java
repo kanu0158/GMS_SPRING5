@@ -11,16 +11,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.gms.web.mbr.Member;
-import com.gms.web.mbr.MemberService;
+
 @Controller
 @RequestMapping("/board")
 public class BoardCtrl {
 	static final Logger logger = LoggerFactory.getLogger(BoardCtrl.class);
-	@Autowired Article article;
-	@Autowired BoardService boardService;
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public String add(@ModelAttribute("article") Article article) {
+	public String add(@ModelAttribute("article") Board board) {
 		logger.info("BoardController ::: add ");
 		/*System.out.println("name is "+board.getName());
 		SDAS
@@ -32,7 +30,7 @@ public class BoardCtrl {
 		System.out.println(member.getTeamId());
 		System.out.println(member.getRoll());
 		System.out.println(member.getSubject());*/
-		boardService.add(article);
+		//boardService.add(article);
 		return "auth:member/login.tiles";
 	}
 	@RequestMapping("/list")
@@ -44,7 +42,7 @@ public class BoardCtrl {
 		
 	}
 	@RequestMapping("/retrieve")
-	public void retrieve(@ModelAttribute("article") Article article) {
+	public void retrieve(@ModelAttribute("article") Board board) {
 		
 	}
 	@RequestMapping("/count")
@@ -52,24 +50,16 @@ public class BoardCtrl {
 		
 	}
 	@RequestMapping("/modify")
-	public String modify(@ModelAttribute("article") Article article,
+	public String modify(@ModelAttribute("article") Board board,
 			Model model) {
 		logger.info("BoardController ::: modify ");
-		/*System.out.println("---userId : "+member.getUserId());
-		System.out.println("---password : "+member.getPassword());
-		System.out.println("---name : "+member.getName());
-		System.out.println("---teamId : "+member.getTeamId());
-		System.out.println("---roll : "+member.getRoll());*/
-		boardService.modify(article);
-		model.addAttribute("user",boardService.retrieve(article));
+		
 		return "user:member/retrieve.tiles";
 	}
 	@RequestMapping("/remove")
-	public String remove(@ModelAttribute("article") Article article) {
+	public String remove(@ModelAttribute("article") Board board) {
 		logger.info("BoardController ::: remove ");
-		/*System.out.println("---userId : "+article.getUserId());
-		System.out.println("---password : "+article.getPassword());*/
-		boardService.remove(article);
+		
 		return "redirect:/";
 	}
 	

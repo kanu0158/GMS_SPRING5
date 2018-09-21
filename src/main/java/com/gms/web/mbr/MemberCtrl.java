@@ -1,5 +1,7 @@
 package com.gms.web.mbr;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -11,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.gms.web.cmm.Util;
 
@@ -21,7 +25,7 @@ import com.gms.web.cmm.Util;
 
 public class MemberCtrl {
 	static final Logger logger = LoggerFactory.getLogger(MemberCtrl.class);
-	@Autowired MemberService memberService;
+	
 	@Autowired MemberMapper mbrmapper;
 	@Autowired Member m;
 	
@@ -38,7 +42,7 @@ public class MemberCtrl {
 		System.out.println(member.getTeamId());
 		System.out.println(member.getRoll());
 		System.out.println(member.getSubject());
-		memberService.add(member);
+		//memberService.add(member);
 		return "auth:member/login.tiles";
 	}
 	@RequestMapping("/list")
@@ -66,8 +70,8 @@ public class MemberCtrl {
 		System.out.println("---name : "+member.getName());
 		System.out.println("---teamId : "+member.getTeamId());
 		System.out.println("---roll : "+member.getRoll());
-		memberService.modify(member);
-		user = memberService.retrieve(member);
+		//memberService.modify(member);
+		//user = memberService.retrieve(member);
 		
 		return "user:member/retrieve.tiles";
 	}
@@ -80,33 +84,33 @@ public class MemberCtrl {
 		System.out.println("session 제거 전 user : "+session.getAttribute("user"));
 		session.removeAttribute("user");
 		System.out.println("session 제거 후 user : "+session.getAttribute("user"));
-		memberService.remove(member);
+		//memberService.remove(member);
 		return "redirect:/";
 	}
 	@PostMapping("/login")
-	public String login(@ModelAttribute("member") Member member,			
-						Model model) {
+	public @ResponseBody Map<String,Object> login(@RequestBody Member member) {
 		logger.info("MemberController ::: login ");
-		//Predicate<String> p = s -> !s.equals("");
-		//Predicate<String> p = s -> s.equals("");
-		//Predicate<String> notP = p.negate();
-		//
-		System.out.println("---userId : "+member.getUserId());
-		System.out.println("---password : "+member.getPassword());
-		String path = "auth:member/login.tiles";
+		Util.log.accept("넘어온 로그인 정보 : "+member.getUserId()+" , "+member.getPassword());
+		String passValid = "WRONG";
+		String idValid = "WRONG";
+		Map<String,Object> rmap = new HashMap<>();
 		//p.test(mbrmapper.exist(member.getUserId()))
-		if(Util.notNull.test(mbrmapper.exist(member.getUserId()))) {
+		if(mbrmapper.count(member) != 0) {
+			idValid = "CORRECT";
+			Util.log.accept("ID 유효성체크결과 : "+idValid);
 			Function<Member,Member> f = (t)->{
-				return mbrmapper.login(t);
+				return mbrmapper.get(t);
 			};
-			path = f.apply(member) == null?path:"user:member/retrieve.tiles";
-			m = Predicate.isEqual("auth:member/login.tiles").test(path)? new Member():mbrmapper.selectOne(member);
+			m = f.apply(member);
+			passValid = m == null?passValid:"CORRECT";
+			m = m==null? new Member():m;
+			Util.log.accept("password 유효성체크결과 : "+passValid);
 			Util.log.accept(m.toString());
-			
-			//System.out.println(path);
 		}
-		
-		return path;
+		rmap.put("ID", idValid);
+		rmap.put("PW", passValid);
+		rmap.put("MBR", m);
+		return rmap;
 	}
 	@RequestMapping("/logout")
 	public String logout() {

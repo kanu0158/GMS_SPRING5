@@ -3,26 +3,24 @@
 <!doctype html>
 <html lang="en">
 <head>
-	<title>Main</title>
-	<link rel="shortcut icon" href="${context}/resources/img/favicon.ico" />
+	<title>Turtle Music</title>
+	<link rel="shortcut icon" href="${context}/resources/img2/favicon.ico" />
 	<link rel="stylesheet"
 		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
 	<link rel="stylesheet"
 		href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-	<link rel="stylesheet" href="${context}/resources/css/style.css">
-
-    <link href="${context}/resources/otherResources/dist/css/AdminLTE.min.css" rel="stylesheet" type="text/css" />
-    <link href="${context}/resources/otherResources/dist/css/skins/_all-skins.min.css" rel="stylesheet" type="text/css" />
+	
+	<link href="${context}/resources/css/style.css" rel="stylesheet"> 
 	
 	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script	src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-	<script src="${context}/resources/js/algo.js"></script>
-	<%-- <script src="${context}/resources/js/router.js"></script> 계속 있기보단 필요할때 호출하고 버리는게 낫다.--%>
+	<script src="${context}/resources/js/app.js"></script>
+		
 </head>
-<body>
+<body data-spy="scroll" data-target="#header">
 <div id="wrapper"></div>
 <script> /* 바디 안에 넣음, 전역메소드로 처리한 것 */
-algo.init('${context}');
+app.init('${context}');
 </script>
 </body>
 </html>

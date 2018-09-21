@@ -20,3 +20,6 @@ $.prototype.zeroChecker = x=>{//$(제이쿼리)에다가 내가만든 nullChecke
 	}
 	return flag;
 };
+
+
+
