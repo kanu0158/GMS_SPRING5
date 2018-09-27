@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Repository;
+
+import com.gms.web.page.Pagination;
 @Repository
 public interface BoardMapper {
 	public void insert(Board p);
@@ -16,5 +18,5 @@ public interface BoardMapper {
 	public int countPaging();
 	public Board listCriteria();
 	public Board listPage();
-	public List<Board> listSearch();
+	public List<Board> list(Pagination p);
 }

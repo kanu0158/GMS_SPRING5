@@ -59,7 +59,68 @@ var ui={//콜백함수 안에서만 전역으로 존재하는 친구를 만들�
 		}).addClass("form-control").appendTo(y);
 		return y;
 	},
-	
+/*	<div class="panel panel-default">
+	  <!-- Default panel contents -->
+	  <div class="panel-heading">Panel heading</div>
+	  <div class="panel-body">
+	    <p>...</p>
+	  </div>
+
+	  <!-- Table -->
+	  <table class="table">
+	    ...
+	  </table>
+	</div>*/
+	tbl : x=>{
+		let p = $('<div class="panel panel-'+x.type+'"/>');
+		p.attr({id : x.id});
+		let ph = $('<div class="panel-heading"/>');
+		ph.html(x.head).appendTo(p);
+		let pb = $('<div class="panel-body"/>');
+		pb.html(x.body).appendTo(p);
+		
+		let t = $('<table/>');
+		t.addClass(x.clazz);
+		let thead = $('<thead/>');
+		let tr =$('<tr/>');
+		$.each(x.list,(i,j)=>{
+			$('<th/>')
+			.html(j)
+			.appendTo(tr);
+		});
+		tr.appendTo(thead);
+		thead.appendTo(t);
+		$('<tbody/>').appendTo(t);
+		t.appendTo(p);
+		
+		
+		
+		
+		
+		
+		/*let t = $('<table/>');
+		let tr =$('<tr/>');
+		$('<th/>').html('번 호').appendTo(tr);
+		$('<th/>').html('제 목').appendTo(tr);
+		$('<th/>').html('내 용').appendTo(tr);
+		$('<th/>').html('작 가').appendTo(tr);
+		$('<th/>').html('등록일').appendTo(tr);
+		tr.appendTo(t);
+		$.each(x, function() { 
+			let tr2 =$('<tr/>');
+			$('<td/>').html(this.bno).appendTo(tr2);
+			$('<td/>').html(this.title).appendTo(tr2);
+			$('<td/>').html(this.content).appendTo(tr2);
+			$('<td/>').html(this.writer).appendTo(tr2);
+			$('<td/>').html(this.viewcnt).appendTo(tr2);
+			tr2.appendTo(t);
+		});
+		
+		*/
+		
+		//let td = $('<td/>');
+		return p;
+	},
 	//이런방식도 있다!!!!! 부트스트랩 그대로 따오는
 	inputGroupPrepend : x =>{
 		return '<div class="input-group mb-3">'

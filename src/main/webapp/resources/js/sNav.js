@@ -1,5 +1,5 @@
 function sNavUI() {
-	return '<div id="header" style="margin-top:80px">'
+	return '<div id="header" style="margin-top:180px">'
 			+ '<div class="header_menu text-center affix" data-spy="affix" data-offset-top="50" id="nav">'
 			+ '<div class="container-fluid">'
 			+ '<nav class="navbar navbar-default zero_mp ">'
@@ -31,6 +31,7 @@ function sNavUI() {
 				+ '<ul class="nav navbar-nav navbar-right main_menu">'
 				+ '<li class="loginBtn"><a id ="loginBtn" href="#" class="loginBtn">LOGIN</a></li>'
 				+ '<li class="addBtn"><a id ="addBtn" href="#" class="addBtn">회원가입</a></li>'
+				+ '<li class="board"><a id ="board" href="#" class="board">게시판</a></li>'
 				+ '</ul>'
 				+ '</div>'
 				/*--userBox--*/

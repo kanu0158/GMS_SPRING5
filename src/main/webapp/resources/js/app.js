@@ -45,7 +45,11 @@ app.main=(()=>{
 app.board =(()=>{
 	var w,nav,header,footer,content,ctx,script,style,img;
 	var init =()=>{
-		alert('init!');
+		alert('board init!');
+		ctx = $.ctx();
+		script = $.script();
+		style = $.style();
+		img = $.img();
 		onCreate();
 	};
 	var onCreate =()=>{
@@ -54,6 +58,33 @@ app.board =(()=>{
 	var setContentView =()=>{
 		$('#headerwrap').remove();
 		$('#service').empty();
+		$.getJSON(ctx+'/boards/1',d=>{
+			alert('getJSON ');
+			$.getScript($.script()+'/compo.js',()=>{
+				let x = {
+					type : 'success',
+					id : 'table',
+					head : '게시판',
+					body : '오픈게시판 ... 누구든지 사용가능',
+					list : ['No','제목','내용','글쓴이','작성일','조회수'],
+					clazz : 'table table-bordered'
+				};
+				ui.tbl(x).appendTo('#service');
+				$.each(d,(i,j)=>{
+					$('<tr/>').append(
+						$('<td/>').attr('width','5%').html(j.bno),
+						$('<td/>').attr('width','5%').html(j.title),
+						$('<td/>').attr('width','40%').html(j.content),
+						$('<td/>').attr('width','5%').html(j.writer),
+						$('<td/>').attr('width','5%').html(j.regdate),
+						$('<td/>').attr('width','5%').html(j.viewcnt)	
+					).appendTo($('tbody'));
+				});
+				
+				//ui.tbl(d).appendTo('#service');
+			});
+			
+		});
 	};
 	return {init : init};
 })();
@@ -207,7 +238,7 @@ app.router = {
 		        		e.preventDefault();
 		        		app.permission.join();
 		        	});
-		        	$('#boardBtn').click(e=>{
+		        	$('#board').click(e=>{
 		        		e.preventDefault();
 		        		app.board.init();
 		        	});

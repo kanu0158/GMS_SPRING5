@@ -1,6 +1,6 @@
 package com.gms.web.brd;
 
-import java.util.Arrays;
+
 import java.util.Date;
 
 import org.springframework.context.annotation.Lazy;
@@ -15,11 +15,7 @@ public class Board {
 	private String title;
 	private String content;
 	private String writer;
-	private Date regdate;
+	private String regdate;
 	private int viewcnt;
 	private int replycnt;
-	
-	private String[] files;
-	
-
 }

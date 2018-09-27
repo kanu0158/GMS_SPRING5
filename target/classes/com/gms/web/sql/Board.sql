@@ -8,6 +8,15 @@ create table BOARD(
     viewcnt INT DEFAULT 0,
     PRIMARY KEY (bno)
 );
+
+INSERT INTO BOARD
+( title, content, writer, regdate, viewcnt)
+VALUES
+('라이언킹','정글의 왕 사자무리 아기사자','Abhaig','2017-08-02',0);
+INSERT INTO BOARD
+( title, content, writer, regdate, viewcnt)
+VALUES
+('어린왕자','불시착한 비행조종사와 외계소년','생떼','2017-08-07',0);
 SELECT * FROM member;
 SELECT * FROM BOARD;
 DESC BOARD;

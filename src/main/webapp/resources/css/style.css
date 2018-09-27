@@ -56,6 +56,12 @@ font-family: 'Roboto', sans-serif;
 
 /*header*/
 /* 네비폰트관련 */
+
+/* table{border:1px solid black}
+table tr{border:1px solid black}
+table tr th{border:1px solid black}
+table tr td{border:1px solid black}
+ */
 #header .header_menu .main_menu {
     padding-top: 0px;
 } 
