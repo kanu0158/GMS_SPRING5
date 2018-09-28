@@ -1,13 +1,13 @@
 "use strict";
 var ui={//콜백함수 안에서만 전역으로 존재하는 친구를 만들겠다. 
 	div : x=>{return $('<div/>').attr(x);},
-	anchor : x=>{return $('<a/>').attr({href : '#',id : x.id}).html(x.txt);},
+	anchor : x=>{return $('<a/>').attr({href : '#',id : x.id}).addClass(x.clazz).html(x.txt);},
 	ul : x=>{
 		let ul = $('<ul>');
 		let len = x.len;
 		let id = x.id;
 		for(var i=0;i<len;i++){
-			$('<li/>').attr({id : id+'-'+i}).appendTo(ul);
+			$('<li/>').attr({id : id+'-'+i}).addClass(x.clazz).appendTo(ul);
 		}
 		return ul;
 	},
@@ -120,6 +120,34 @@ var ui={//콜백함수 안에서만 전역으로 존재하는 친구를 만들�
 		
 		//let td = $('<td/>');
 		return p;
+	},
+	/*let prev = $('<li/>').addClass('page-item').appendTo(ul);
+		ui.anchor({ id : 'prevBtn', clazz : 'page-link', txt : 'Previous'}).appendTo(prev);
+		
+		for(let i=x.beginPage;i<=x.endPage;i++){
+			let li = $('<li/>').addClass('page-item').appendTo(ul);
+			ui.anchor({ id : 'page'+i, clazz : 'page-link', txt : i}).appendTo(li)
+			.click(e=>{
+				e.preventDefault();
+				alert('no :: page'+i);
+			});
+		}
+		let next = $('<li/>').addClass('page-item').appendTo(ul);
+		ui.anchor({ id : 'nextBtn', clazz : 'page-link', txt : 'Next'}).appendTo(next);
+		if(!x.existPrev){
+			prev.addClass('disabled');
+		}else{
+			prev.removeClass('disabled');
+		}
+		if(!x.exisNext){
+			next.addClass('disabled');
+		}else {
+			next.removeClass('disabled');
+		}*/
+	page : x=>{
+		let n = $('<nav aria-label="Page navigation"/>').addClass('center');
+		let ul =$('<ul/>').addClass('pagination').appendTo(n);
+		return n;
 	},
 	//이런방식도 있다!!!!! 부트스트랩 그대로 따오는
 	inputGroupPrepend : x =>{

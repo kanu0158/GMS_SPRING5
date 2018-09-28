@@ -12,11 +12,12 @@ public interface BoardMapper {
 	public List<?> selectList(Map<?,?> p);
 	public List<?> selectSome(Map<?,?> p);
 	public Board selectOne(Board p);
-	public int count(Map<?,?> p);
+	//public int count(Map<?,?> p);
 	public void update(Board p);
 	public void delete(Board p);
 	public int countPaging();
 	public Board listCriteria();
 	public Board listPage();
 	public List<Board> list(Pagination p);
+	public int count(Map<String,Object> p);
 }

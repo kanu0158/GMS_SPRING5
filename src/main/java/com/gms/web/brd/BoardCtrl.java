@@ -28,6 +28,7 @@ public class BoardCtrl {
 	@Autowired BoardMapper brdmapper;
 	@Autowired Board brd;
 	@Autowired Pagination page;
+	@Autowired HashMap<String, Object> map;
 	@RequestMapping(value="/add", method=RequestMethod.POST)
 	public String add(@ModelAttribute("article") Board board) {
 		logger.info("BoardController ::: add ");
@@ -45,15 +46,57 @@ public class BoardCtrl {
 		return "auth:member/login.tiles";
 	}
 	@RequestMapping("/boards/{pageNo}")
-	public @ResponseBody List<Board> list(@PathVariable String pageNo) {
+	public @ResponseBody Map<String,Object> list(@PathVariable String pageNo) {
 		logger.info("BoardController ::: list ::: pageNo "+pageNo);
-		page.carryOut(pageNo+"/"+62);
-		Util.log.accept("start end:"+page.getBeginRow()+"::"+page.getEndRow());
-		List<Board> lst = brdmapper.list(page);
-		Util.log.accept("게시글 리스트:"+lst);
+		map.clear();
+		map.put("pageNum", pageNo);
 		
-		return lst;
+		map.put("count", brdmapper.count(map));
+		page.carryOut(map);
+		Util.log.accept("brdmapper.countAll:"+brdmapper.count(map));
+		Util.log.accept("count:"+page.getCount());
+		Util.log.accept("existPrev:"+page.isExistPrev());
+		Util.log.accept("prevBlock:"+page.getPrevBlock());
+		Util.log.accept("beginPage:"+page.getBeginPage());
+		Util.log.accept("existNext:"+page.isExisNext());
+		Util.log.accept("nextBlock:"+page.getNextBlock());
+		Util.log.accept("BeginRow :: EndRow:"+page.getBeginRow()+"::"+page.getEndRow());
+		List<Board> list = brdmapper.list(page);
+		Util.log.accept("게시글 리스트:"+list);
+		map.clear();
+		map.put("list", list);
+		map.put("page", page);
+		return map;
 	}
+	
+	@RequestMapping("/boards/{id}/{pageNo}")
+	public @ResponseBody Map<String,Object> myList(
+			@PathVariable String id
+			,@PathVariable String pageNo) {
+		logger.info("BoardController ::: myList :::ID {} pageNo {}",id,pageNo);
+		map.clear();
+		map.put("writer", id);
+		Util.log.accept("writer:"+map.get("writer"));
+		map.put("pageNum", pageNo);
+		map.put("count", brdmapper.count(map));
+		page.carryOut(map);
+		Util.log.accept("brdmapper.count:"+brdmapper.count(map));
+		Util.log.accept("count:"+page.getCount());
+		Util.log.accept("existPrev:"+page.isExistPrev());
+		Util.log.accept("prevBlock:"+page.getPrevBlock());
+		Util.log.accept("beginPage:"+page.getBeginPage());
+		Util.log.accept("existNext:"+page.isExisNext());
+		Util.log.accept("nextBlock:"+page.getNextBlock());
+		Util.log.accept("BeginRow :: EndRow:"+page.getBeginRow()+"::"+page.getEndRow());
+		List<Board> list = brdmapper.list(page);
+		Util.log.accept("게시글 리스트:"+list);
+		map.clear();
+		map.put("list", list);
+		map.put("page", page);
+		map.put("id", id);
+		return map;
+	}
+	
 /*	@RequestMapping("/boards")
 	public @ResponseBody Map<String,Object> list() {
 		logger.info("BoardController ::: list");
