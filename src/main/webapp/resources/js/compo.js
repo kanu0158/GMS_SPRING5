@@ -92,12 +92,6 @@ var ui={//콜백함수 안에서만 전역으로 존재하는 친구를 만들�
 		thead.appendTo(t);
 		$('<tbody/>').appendTo(t);
 		t.appendTo(p);
-		
-		
-		
-		
-		
-		
 		/*let t = $('<table/>');
 		let tr =$('<tr/>');
 		$('<th/>').html('번 호').appendTo(tr);
@@ -149,6 +143,17 @@ var ui={//콜백함수 안에서만 전역으로 존재하는 친구를 만들�
 		let ul =$('<ul/>').addClass('pagination').appendTo(n);
 		return n;
 	},
+	createbrd : x=>{
+		let d = '<div>'
+			+'<span><input id="brdTitle" type="text" class="width725px" placeholder="제목" value="'+x.title+'"></span></br>'
+			+'<span> writer </span>'
+			+'<span><input type="text" class="width685px" value="' +x.id+'" readonly></span></br>'
+			+'<span><textarea rows="20" cols="100" class="width725px" placeholder="내용" id="brdContent" name="CONTENTS"></textarea></span></br>'
+			+'</div>';
+		
+		return d;
+	}
+	,
 	//이런방식도 있다!!!!! 부트스트랩 그대로 따오는
 	inputGroupPrepend : x =>{
 		return '<div class="input-group mb-3">'

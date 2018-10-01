@@ -28,7 +28,7 @@ function sNavUI() {
 				/*--삼선--*/
 				/* userBox */
 				+ '<div class="collapse navbar-collapse collapseNav" id="userBox">'
-				+ '<ul class="nav navbar-nav navbar-right main_menu">'
+				+ '<ul id="userUL" class="nav navbar-nav navbar-right main_menu">'
 				+ '<li class="loginBtn"><a id ="loginBtn" href="#" class="loginBtn">LOGIN</a></li>'
 				+ '<li class="addBtn"><a id ="addBtn" href="#" class="addBtn">회원가입</a></li>'
 				+ '<li class="board"><a id ="board" href="#" class="board">게시판</a></li>'

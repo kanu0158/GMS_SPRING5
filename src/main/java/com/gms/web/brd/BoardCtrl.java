@@ -14,12 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.gms.web.cmm.Util;
+import com.gms.web.mbr.Member;
 import com.gms.web.page.Pagination;
 
 @RestController
@@ -29,28 +31,49 @@ public class BoardCtrl {
 	@Autowired Board brd;
 	@Autowired Pagination page;
 	@Autowired HashMap<String, Object> map;
-	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public String add(@ModelAttribute("article") Board board) {
+	
+	@PostMapping("/boards/add")
+	public @ResponseBody Map<String,Object> add(@RequestBody Board board) {
 		logger.info("BoardController ::: add ");
-		/*System.out.println("name is "+board.getName());
-		SDAS
-		System.out.println("--------------------------------------");
-		System.out.println(member.getUserId());
-		System.out.println(member.getPassword());
-		System.out.println(member.getName());
-		System.out.println(member.getSsn());
-		System.out.println(member.getTeamId());
-		System.out.println(member.getRoll());
-		System.out.println(member.getSubject());*/
-		//boardService.add(article);
-		return "auth:member/login.tiles";
+		map.clear();
+		Util.log.accept(" add 넘어온  정보 : "+board.getWriter()+" , "+board.getTitle()+" , "+board.getContent());
+		map.put("id", board.getWriter());
+		map.put("pageNo", 1);
+		brdmapper.update(board);
+		
+		return map;
 	}
+	
+	@PostMapping("/boards/modify")
+	public @ResponseBody Map<String,Object> modify(@RequestBody Board board) {
+		logger.info("BoardController ::: modify ");
+		map.clear();
+		Util.log.accept(" modify 넘어온 정보 : "+board.getBno()+" , "+board.getWriter()+" , "+board.getTitle()+" , "+board.getContent());
+		map.put("id", board.getWriter());
+		map.put("pageNo", 1);
+		brdmapper.insert(board);
+		//그ㅇㅇ
+		return map;
+	}
+	@RequestMapping("/boards/remove/{id}/{pageNo}")
+	public @ResponseBody Map<String,Object> remove(
+			@PathVariable String id,
+			@PathVariable String pageNo) {
+		logger.info("BoardController ::: remove ::: pageNo "+pageNo);
+		Util.log.accept("remove 넘어온 정보 : "+id+" , "+pageNo);
+		map.clear();
+		brdmapper.delete(pageNo);
+		map.put("id", id);
+		map.put("deleteNum", pageNo);
+		map.put("pageNo", 1);
+		return map;
+	}
+	
 	@RequestMapping("/boards/{pageNo}")
 	public @ResponseBody Map<String,Object> list(@PathVariable String pageNo) {
 		logger.info("BoardController ::: list ::: pageNo "+pageNo);
 		map.clear();
 		map.put("pageNum", pageNo);
-		
 		map.put("count", brdmapper.count(map));
 		page.carryOut(map);
 		Util.log.accept("brdmapper.countAll:"+brdmapper.count(map));

@@ -26,11 +26,7 @@ app.main=(()=>{
 		content = script+'/content.js';
 		nav = script+'/sNav.js';
 		footer = script+'/footer.js';
-		console.log('style : '+style);
-		console.log('sMain : '+sMain);
-		console.log('nav : '+nav);
-		console.log('content : '+content);
-		console.log('footer : '+footer);
+		
 		onCreate();
 	};
 	var onCreate =()=>{
@@ -51,6 +47,8 @@ app.board =(()=>{
 		style = $.style();
 		img = $.img();
 		onCreate();
+		//갓소진 , 만찢남
+		
 	};
 	var onCreate =()=>{
 		setContentView();
@@ -77,8 +75,8 @@ app.permission =(()=>{
 				//.addClass()
 				.appendTo($('#loginBox'))
 				.click(e=>{
-					alert('id : '+$('#userId').val());
-					alert('pass : '+$('#password').val());
+					//alert('id : '+$('#userId').val());
+					//alert('pass : '+$('#password').val());
 					$.ajax({
 						//url : ctx+'/algo/money/'+$('#money').val(),get방식
 						url : $.ctx() + '/member/login',
@@ -89,20 +87,28 @@ app.permission =(()=>{
 							password : $('#password').val()
 							}),/*post방식*/
 						success : d=>{
-							alert('id 판단이다!'+d.ID);
-							alert('pw 판단이다!'+d.PW);
-							alert('member 판단이다!'+d.MBR.userId);
-							$.getScript($.script()+'/content.js',()=>{
-								$('#service').html(contentUI());
-								$('#loginBtn').attr({id : 'loginFormBtn'}).html('logout');
-								$('#addBtn').attr({id : 'mypage'}).html('mypage');
-								$('#board').attr({id : 'myboard'}).html('my_board');
-								
-							});
-							$('#myboard').click(e=>{
-								app.service.myBoard({ id : d.MBR.userId, pageNo : '1'});
-							});
-							
+							app.router.myHome(d);
+							console.log('lgoin.success in1');
+							/*$.when(
+						           $.Deferred(y=>{
+						               $(y.resolve);
+						            })
+						        ).done(x=>{
+						        	console.log('lgoin.success in2');
+						        	$(document).ready(function() { 
+						        		//alert('버튼바꾸는중');
+						        		$('#loginBtn').attr({id : 'logoutBtn'}).html('logout');
+										$('#addBtn').attr({id : 'mypage'}).html('mypage');
+										$('#board').attr({id : 'myboard'}).html('my_board');
+										$('#myboard').click(e=>{
+											app.service.myBoard({ id : d.MBR.userId, pageNo : '1'});
+										});
+						        	});
+						        })
+						        .fail(x=>{
+						    		console.log('로드실패');
+						    	});*/
+
 							/*if(d.ID ==="WRONG"){
 								
 							}else if(d.PW ==="WRONG"){
@@ -116,9 +122,9 @@ app.permission =(()=>{
 							alert('에러발생2'+m2);
 							alert('에러발생3'+m3);
 						}
-					});
-				
+					});		
 				});
+				
 			});
 		})
 		
@@ -259,7 +265,83 @@ app.service = {
 			
 		});
 	},
+	deleteBrd : x=>{
+		alert('deleteBrd in');
+		$.getJSON($.ctx()+'/boards/remove/'+x.id+'/'+x.bno,d=>{
+				alert(d.deleteNum+'번 게시글이 삭제되었습니다.');
+				app.service.myBoard(d);
+			});
+		
+	},
+	updateBrd : x=>{
+		alert('updateBrd in');
+		let service = $('#service');
+		$.getScript($.script()+'/compo.js',()=>{
+			service.html(ui.createbrd(x));
+			$('#brdContent').val(x.content);
+			ui.btn({ clazz : 'success', txt : '수정완료'}).appendTo(service)
+			.click(e=>{
+				alert('수정완료');
+				$.ajax({
+					//url : ctx+'/algo/money/'+$('#money').val(),get방식
+					url : $.ctx() + '/boards/modify',
+					method : 'post',
+					contentType : 'application/json',/*mime 타입*/
+					data : JSON.stringify({
+						bno : x.bno,
+						writer : x.id,
+						title : $('#brdTitle').val(),
+						content : $('#brdContent').val()
+						}),/*post방식*/
+					success : d=>{
+						alert('modifyBrd ::'+d.id);
+						app.service.myBoard(d);
+					},
+					error : (m1,m2,m3)=>{
+						alert('에러발생1'+m1);
+						alert('에러발생2'+m2);
+						alert('에러발생3'+m3);
+					}
+				});		
+			
+				
+			});
+			
+		});
+	},
+	createBrd : x=>{
+		alert('createBrd in');
+		let service = $('#service');
+		$.getScript($.script()+'/compo.js',()=>{
+			service.html(ui.createbrd(x));
+			ui.btn({ clazz : 'success', txt : '작성완료'}).appendTo(service)
+			.click(e=>{
+				$.ajax({
+					//url : ctx+'/algo/money/'+$('#money').val(),get방식
+					url : $.ctx() + '/boards/add',
+					method : 'post',
+					contentType : 'application/json',/*mime 타입*/
+					data : JSON.stringify({
+						writer : x.id,
+						title : $('#brdTitle').val(),
+						content : $('#brdContent').val()
+						}),/*post방식*/
+					success : d=>{
+						alert('createBrd ::'+d.id);
+						app.service.myBoard(d);
+					},
+					error : (m1,m2,m3)=>{
+						alert('에러발생1'+m1);
+						alert('에러발생2'+m2);
+						alert('에러발생3'+m3);
+					}
+				});		
+			
+				});
+			});
+	},
 	myBoard : x=>{
+		alert('myboard ::: x.id '+ x.id);
 		let service = $('#service');
 		service.empty();
 		$.getJSON($.ctx()+'/boards/'+x.id+'/'+x.pageNo,d=>{
@@ -274,17 +356,44 @@ app.service = {
 					clazz : 'table table-bordered'
 				};
 				ui.tbl(x).appendTo(service);
+				alert('d.id ::'+d.id);
 				console.log('page ::'+d.page);
 				console.log('page.beginRow ::'+d.page.beginRow);
+				let tb = $('tbody');
+				ui.anchor({ id : 'cBoard', txt : '새글쓰기'}).appendTo(service)
+				.click(e=>{
+		        		e.preventDefault();
+		        		app.service.createBrd(d);
+		        	});
 				$.each(d.list,(i,j)=>{
-					$('<tr/>').append(
+					$('<tr/>').attr({ id : 'myB'+i}).append(
 						$('<td/>').attr('width','5%').html(j.bno),
 						$('<td/>').attr('width','5%').html(j.title),
 						$('<td/>').attr('width','40%').html(j.content),
 						$('<td/>').attr('width','5%').html(j.writer),
 						$('<td/>').attr('width','5%').html(j.regdate),
 						$('<td/>').attr('width','5%').html(j.viewcnt)	
-					).appendTo($('tbody'));
+					).appendTo(tb);
+					ui.anchor({ id : 'u'+j.bno, txt : '수정'}).appendTo(tb)
+					.click(e=>{
+		        		e.preventDefault();
+		        		app.service.updateBrd({ 
+		        			id : j.writer,
+		        			bno : j.bno,
+		        			title : j.title,
+		        			content : j.content
+		        		});
+		        	});
+					ui.anchor({ id : 'j'+j.bno, txt : '삭제'}).appendTo(tb)
+					.click(e=>{
+		        		e.preventDefault();
+		        		app.service.deleteBrd({ 
+		        			id : j.writer,
+		        			bno : j.bno,
+		        			title : j.title,
+		        			content : j.content
+		        		});
+		        	});
 				});
 				ui.page({}).appendTo(service);
 				let p = d.page;
@@ -295,7 +404,7 @@ app.service = {
 					e.preventDefault();
 					alert('prev no :: page'+p.prevBlock);
 					console.log('p.prevBlock : '+p.prevBlock);
-					app.service.myBoard({ id : d.ID, pageNo : p.prevBlock});
+					app.service.myBoard({ id : d.id, pageNo : p.prevBlock});
 				});
 				let end = p.endPage;
 				for(let i=p.beginPage;i<=end;i++){
@@ -303,8 +412,9 @@ app.service = {
 					ui.anchor({ id : 'page'+i, clazz : 'page-link', txt : i}).appendTo(li)
 					.click(e=>{
 						e.preventDefault();
+						alert('click pagenum'+ i)
 						alert('no :: page'+i);
-						app.service.myBoard({ id : d.ID, pageNo : i});
+						app.service.myBoard({ id : d.id, pageNo : i});
 					});
 				}
 				let next = $('<li/>').addClass('page-item').appendTo(ul);
@@ -312,7 +422,7 @@ app.service = {
 				.click(e=>{
 					e.preventDefault();
 					alert('next no :: page'+p.nextBlock);
-					app.service.myBoard({ id : d.ID, pageNo : p.nextBlock});
+					app.service.myBoard({ id : d.id, pageNo : p.nextBlock});
 				});
 				if(!p.existPrev){
 					//prev.addClass('disabled');
@@ -331,6 +441,7 @@ app.service = {
 
 app.router = {
 		init : x =>{
+			console.log('router.init in');
 			/*외부의 js파일 호출하는 것, 자바에서의 import의 의미와 같다, context는 webapp까지를 가리킴*/
 			$.getScript(x+'/resources/js/router.js',
 					()=>{
@@ -344,6 +455,7 @@ app.router = {
 			);
 		},
 		home : ()=>{
+			console.log('router.home in');
 			$.when(
 		            $.getScript($.script()+'/sNav.js'),
 		            $.getScript($.script()+'/sMain.js'),
@@ -358,6 +470,7 @@ app.router = {
 		        			+mainUI()
 		        			+contentUI()
 		        			+footerUI());
+		        	//alert('ui그리는중');
 		        	$('#loginBtn').click(e=>{
 		        		e.preventDefault();
 		        		app.permission.login();
@@ -366,17 +479,47 @@ app.router = {
 		        		e.preventDefault();
 		        		app.permission.join();
 		        	});
-		        	/*$('#board').click(e=>{
+		        	$('#board').click(e=>{
 		        		e.preventDefault();
 		        		alert('전체 board');
 		        		app.board.init();
-		        	});*/
+		        	});
+		        	
+		        })
+		        .fail(x=>{
+		    		console.log('로드실패');
+		    	});
+		},
+		myHome : d=>{
+			console.log('router.myHome in');
+			$.when(
+		            $.getScript($.script()+'/sNav.js'),
+		            $.getScript($.script()+'/sMain.js'),
+		            $.getScript($.script()+'/content.js'),
+		            $.getScript($.script()+'/footer.js'),
+		           
+		            $.Deferred(y=>{
+		               $(y.resolve);
+		            })
+		        ).done(x=>{
+		        	$('#wrapper').html(sNavUI()
+		        			+mainUI()
+		        			+contentUI()
+		        			+footerUI());
+		        	//alert('ui그리는중');
+		        	$('#loginBtn').attr({id : 'logoutBtn'}).html('logout');
+					$('#addBtn').attr({id : 'mypage'}).html('mypage');
+					$('#board').attr({id : 'myboard'}).html('my_board');
+					$('#myboard').click(e=>{
+						app.service.myBoard({ id : d.MBR.userId, pageNo : '1'});
+					});
 		        	
 		        })
 		        .fail(x=>{
 		    		console.log('로드실패');
 		    	});
 		}
+			
 };
 
 

@@ -4,6 +4,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.gms.web.brd.BoardMapper">
+<delete id="delete">
+	DELETE FROM BOARD
+	WHERE BNO LIKE #{pageNo};
+</delete>
+<update id="update">
+	UPDATE BOARD
+	SET TITLE = #{title}, CONTENT = #{content}
+	WHERE BNO LIKE #{bno};
+</update>
+<insert id="insert">
+	INSERT INTO BOARD
+	( WRITER, TITLE, CONTENT ) 
+	VALUES
+	(#{writer}, #{title}, #{content})
+</insert>
 <select id="count" resultType="int">
 	SELECT COUNT(*)
 	FROM BOARD
