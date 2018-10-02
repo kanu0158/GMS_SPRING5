@@ -32,6 +32,7 @@ function sNavUI() {
 				+ '<li class="loginBtn"><a id ="loginBtn" href="#" class="loginBtn">LOGIN</a></li>'
 				+ '<li class="addBtn"><a id ="addBtn" href="#" class="addBtn">회원가입</a></li>'
 				+ '<li class="board"><a id ="board" href="#" class="board">게시판</a></li>'
+				+ '<li class="drag"><a id ="drag" href="#" class="drag">Drag And Drop</a></li>'
 				+ '</ul>'
 				+ '</div>'
 				/*--userBox--*/

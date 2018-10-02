@@ -87,8 +87,12 @@ app.permission =(()=>{
 							password : $('#password').val()
 							}),/*post방식*/
 						success : d=>{
+							console.log('login.success in1');
+							alert("loginID"+d.MBR.userId);
+							$.cookie("loginID", d.MBR.userId);
 							app.router.myHome(d);
-							console.log('lgoin.success in1');
+							
+							
 							/*$.when(
 						           $.Deferred(y=>{
 						               $(y.resolve);
@@ -267,7 +271,7 @@ app.service = {
 	},
 	deleteBrd : x=>{
 		alert('deleteBrd in');
-		$.getJSON($.ctx()+'/boards/remove/'+x.id+'/'+x.bno,d=>{
+		$.getJSON($.ctx()+'/boards/remove/'+$.cookie("loginID")+'/'+x.bno,d=>{
 				alert(d.deleteNum+'번 게시글이 삭제되었습니다.');
 				app.service.myBoard(d);
 			});
@@ -289,7 +293,7 @@ app.service = {
 					contentType : 'application/json',/*mime 타입*/
 					data : JSON.stringify({
 						bno : x.bno,
-						writer : x.id,
+						writer : $.cookie("loginID"),
 						title : $('#brdTitle').val(),
 						content : $('#brdContent').val()
 						}),/*post방식*/
@@ -322,7 +326,8 @@ app.service = {
 					method : 'post',
 					contentType : 'application/json',/*mime 타입*/
 					data : JSON.stringify({
-						writer : x.id,
+						//writer : x.id,
+						writer : $.cookie("loginID"),
 						title : $('#brdTitle').val(),
 						content : $('#brdContent').val()
 						}),/*post방식*/
@@ -338,6 +343,29 @@ app.service = {
 				});		
 			
 				});
+			
+			$('<form id = "frm" action = "uploadForm" method="post" enctype="multipart/form-data" >'
+				+'<input type="file" name="file" > '
+				+'<input type="submit">'
+				+'</form>'
+			).appendTo(service)
+			.click(e=>{ 
+			    // ajax
+			    $.ajax({
+			        url: $.ctx()+'/boards/fileupload',
+			        type:'POST',
+			        data:new FormData($('#frm')),
+			        async:false,
+			        cache:false,
+			        contentType:false,
+			        processData:false
+			    }).done(function(response){
+			        alert(response);
+			    });
+
+
+				});
+			
 			});
 	},
 	myBoard : x=>{
@@ -484,6 +512,41 @@ app.router = {
 		        		alert('전체 board');
 		        		app.board.init();
 		        	});
+		        	$('#drag').click(e=>{
+		        		e.preventDefault();
+		        		alert('전체 drag');
+		        		$('#service').html(
+		        			'<h3>AJAX FILE UPLOAD</h3>'
+		        			+'<div class="fileDrop"></div>'	
+		        			+'<div class="uploadedList"></div>'
+		        		);
+		        		$('.fileDrop')
+		        		.on('dragenter dragover',e=>{
+		        			e.preventDefault();
+		        		});
+		        		$('.fileDrop')
+		        		.on('drop',e=>{
+		        			 e.preventDefault();
+		                     var files = e.originalEvent.dataTransfer.files;
+		                     var file = files[0];
+		                     console.log(file);
+		                     var formData = new FormData();
+		                     formData.append('file',file);
+		                     $.ajax({
+		                         url:$.ctx()+'/uploadAjax',
+		                         data : formData,
+		                         dataType:'text',
+		                         processData:false,
+		                         contentType:false,
+		                         type:'post',
+		                         success:d=>{
+		                             alert(d);
+		                         }
+		                     })
+		        		});
+		        		
+		        	});
+		        	
 		        	
 		        })
 		        .fail(x=>{

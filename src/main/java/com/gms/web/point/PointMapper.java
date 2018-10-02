@@ -1,8 +1,12 @@
 package com.gms.web.point;
 
-public interface PointMapper {
+import java.util.Map;
 
-	public void updatePoint(String uid,int point)throws Exception;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface PointMapper {
+	public void update(Map<?,?> p);
 	
 }
 

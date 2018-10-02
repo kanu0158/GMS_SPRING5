@@ -91,6 +91,7 @@ public class MemberCtrl {
 	public @ResponseBody Map<String,Object> login(@RequestBody Member member) {
 		logger.info("MemberController ::: login ");
 		Util.log.accept("넘어온 로그인 정보 : "+member.getUserId()+" , "+member.getPassword());
+		Util.log.accept("숨겨진 로그");
 		String passValid = "WRONG";
 		String idValid = "WRONG";
 		Map<String,Object> rmap = new HashMap<>();
@@ -107,9 +108,11 @@ public class MemberCtrl {
 			Util.log.accept("password 유효성체크결과 : "+passValid);
 			Util.log.accept(m.toString());
 		}
+		
 		rmap.put("ID", idValid);
 		rmap.put("PW", passValid);
 		rmap.put("MBR", m);
+		Util.log.accept(":::::::m. :::" + m.getUserId());
 		return rmap;
 	}
 	@RequestMapping("/logout")

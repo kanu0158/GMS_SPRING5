@@ -152,8 +152,7 @@ var ui={//콜백함수 안에서만 전역으로 존재하는 친구를 만들�
 			+'</div>';
 		
 		return d;
-	}
-	,
+	},
 	//이런방식도 있다!!!!! 부트스트랩 그대로 따오는
 	inputGroupPrepend : x =>{
 		return '<div class="input-group mb-3">'

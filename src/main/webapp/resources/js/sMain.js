@@ -6,7 +6,7 @@ function mainUI(){
 			+'<h6>MC 달팽 !!! </h6>'
 		+'</div>'
 		+'<div class="col-lg-8 col-lg-offset-2 himg">'
-		+'<iframe width="640" height="360" src="https://www.youtube.com/embed/_je97PWLoBQ?ecver=1" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
+		+'<iframe width="640" height="360" src="https://www.youtube.com/embed/s0UjELAUMjE?start=80" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>'
 			+'<img src="'+$.img()+'/browser.png"'
 				+'class="img-responsive">'
 		+'</div>'

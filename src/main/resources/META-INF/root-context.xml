@@ -41,6 +41,9 @@
 		<property name="username" value="mariadb"/>
 		<property name="password" value="mariadb"/>
 	</bean>
+	 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource" ref="dataSource"/>
+   </bean> 
 	<!--fm 설정
 	 <bean id="sqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource"></property>
@@ -57,5 +60,65 @@
 	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlSessionFactoryBean"/>
 	</bean>
-	<mybatis-spring:scan base-package="com.gms.web"/>	
+	<mybatis-spring:scan base-package="com.gms.web"/>
+	
+	<!-- 파일업로드 -->
+	<bean id="uploadPath" class="java.lang.String">
+		<constructor-arg value="C:\\Users\\1027\\spring4_workspace\\gms\\gms\\src\\main\\webapp\\resources\\img"/>
+	</bean>
+	<!-- 파일업로드 -->
+	
+	<!-- 파일업로드 -->
+	<bean id="multipartResolver"
+	   class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	   <!-- one of the properties available; the maximum file size in bytes -->
+	   <property name="maxUploadSize" value="10000000" />
+	 </bean>
+	 <!-- 파일업로드 -->
+	 
+	 <!-- 메일보내는것 -->
+	 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="hanbit"/>
+		<property name="password" value="hanbit"/>
+		<!-- The name of the property, following JavaBean naming conventions -->
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.transport.protocol">smtp</prop>
+				<prop key="mail.smtp.auth">true</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.debug">true</prop>
+			</props>
+		</property>
+	</bean>
+	<!-- 메일보내는것 -->
+	
+	
+	<!-- 인터셉터 로그인 -->
+	<!-- <mvc:interceptors>
+			<mvc:interceptor>
+				<mvc:mapping path="/"/>
+				<bean class="com.gms.web.interceptors.LoginInterceptor" />
+			</mvc:interceptor>
+	</mvc:interceptors> -->
+	<!-- 인터셉터 로그인 -->
+	
+	<!-- 노래,유튜브 등등 플레이어 MediaType-->
+	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManager">
+        <constructor-arg>
+            <bean class="org.springframework.web.accept.PathExtensionContentNegotiationStrategy">
+                <constructor-arg>
+                    <map>
+                        <entry key="atom">
+                            <util:constant static-field="org.springframework.http.MediaType.APPLICATION_ATOM_XML"/>
+                        </entry>
+                    </map>
+                </constructor-arg>
+            </bean>
+        </constructor-arg>
+    </bean>
+	<!-- 노래,유튜브 등등 플레이어 -->
+	
+	<tx:annotation-driven/>	
 </beans>
