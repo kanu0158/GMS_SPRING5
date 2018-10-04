@@ -96,12 +96,13 @@
 	
 	
 	<!-- 인터셉터 로그인 -->
-	<!-- <mvc:interceptors>
+	<bean id="sampleInterceptor" class="com.gms.web.interceptors.LoginInterceptor"/>
+	<mvc:interceptors>
 			<mvc:interceptor>
-				<mvc:mapping path="/"/>
-				<bean class="com.gms.web.interceptors.LoginInterceptor" />
+				<mvc:mapping path="/member/login"/>
+				<ref bean="sampleInterceptor"/>
 			</mvc:interceptor>
-	</mvc:interceptors> -->
+	</mvc:interceptors>
 	<!-- 인터셉터 로그인 -->
 	
 	<!-- 노래,유튜브 등등 플레이어 MediaType-->

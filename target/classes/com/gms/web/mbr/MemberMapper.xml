@@ -3,7 +3,19 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.gms.web.mbr.MemberMapper">
-  <select id="get" resultType="com.gms.web.mbr.Member">
+	<resultMap type="com.gms.web.mbr.Member" id="mbr">
+		<id property="userId" column="USERID"></id>
+		<result property="teamId" column="TEAMID"/>
+		<result property="name" column="NAME"/>
+		<result property="ssn" column="SSN"/>
+		<result property="roll" column="ROLL"/>
+		<result property="password" column="PASSWORD"/>
+		<result property="age" column="AGE"/>
+		<result property="gender" column="GENDER"/>
+		<result property="subject" column="SUBJECT"/>
+	</resultMap>
+	
+  <select id="get" resultType="mbr">
     SELECT USERID, TEAMID, PASSWORD, NAME, SSN, ROLL, AGE, GENDER, SUBJECT FROM MEMBER 
     <where>
     	<if test=" userId != null and userId != '' ">
@@ -20,7 +32,7 @@
 	VALUES
 	(#{userId},#{teamId},#{password},#{name},#{ssn},#{roll},#{age},#{gender},#{subject});
   </insert>
-  <select id="login" resultType="com.gms.web.mbr.Member">
+  <select id="login" resultType="mbr">
     SELECT USERID, TEAMID, PASSWORD, NAME, SSN, ROLL, AGE, GENDER, SUBJECT FROM MEMBER 
     WHERE USERID LIKE #{userId}
     	AND PASSWORD LIKE #{password}
